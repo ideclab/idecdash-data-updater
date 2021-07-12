@@ -13,5 +13,17 @@ IDECDash Data Updater es un componente de IDECDash, visite la wiki del repositor
 
 `git clone https://github.com/xxxxx/interactive_dashboard_backend/`
 
+2) Instala las dependencias
+
+`pip install -r requirements.txt`
+
+4) Compila el paquete 
+
+`python setup.py sdist`
+
+5) Ve a la carpera **/dist** e instala el paquete.
+
+`pip3 install NOMBRE_DEL_ARCHIVO.tar.gz`
+
 ## Configuración
 Una vez que tengamos nuestro fichero de entorno podremos ver que posee nuevas claves en comparación a un fichero de entorno tradicional de laravel, para saber que valores asignar se explicará que hace cada apartado.
