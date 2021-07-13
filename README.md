@@ -102,11 +102,42 @@ os.environ['NOTIFICATION_EMAILS'] = os.pathsep.join(mails)
 
 ***
 
-Si es true (Primera carga) no comprobará los archivos requests con los anteriores antes de insertar los nuevos, se recomienda cambiarlo a false luego de ejecutar la carga inicial y una primera actualización.
-Cuando es ````False```` comprobará los nuevos requests con los anteriores para prevenir la inserción de duplicados.
+Gestionar la carga inicial. Si es true (Primera carga) no comprobará los archivos requests con los anteriores antes de insertar los nuevos, se recomienda cambiarlo a false luego de ejecutar la carga inicial y una primera actualización.
+Cuando es ````False```` validará los nuevos requests con los cargados en la carga anterior -valga la redundancia- para prevenir la inserción de duplicados.
 
-**Observación:** Aunque se inserten datos "crudos" duplicados, al procesarse las interacciones no se insertarán actividades duplicados debido a que están protegidas por una clave primaria mixta unica, por lo cual, puede considere esto como un segundo factor de protección.
+**Observación:** Aunque se inserten requests duplicados, al procesarse las interacciones no se insertarán actividades duplicadas debido a que están protegidas por una clave primaria mixta unica, por lo cual, considere esto como un segundo factor de protección.
 
 ````
 os.environ['FIRST_DATA_UPDATE']= 'True'
+````
+
+***
+
+Eliminar los archivos descargados (exceptuando requests) en la actualización de datos.
+
+**Observación:** Durante el proceso notamos que canvas data cli hace un mal corte de registros por archivo, duplicando algunos registros que posteriormente dan excepciones en la carga automatica debido a indices o claves primarias. Si se establece en True la siguiente propiedad se eliminarán todos los archivos y se descargarán nuevamente para asegurar así la integridad de la aplicación.
+
+````
+os.environ['FORMAT_BEFORE_DOWNLOAD']= 'False'
+````
+
+***
+
+Activa o no la descarga de nuevos archivos.
+
+````
+os.environ['ENABLE_DOWNLOAD']= 'False'
+````
+
+***
+
+Recupera desde los archivos descargados con Canvas Data Cli solo los que poseen la extensión definida. 
+os.environ['FILE_EXTENSION']='gz'
+
+***
+
+La contraseña es utilizada para detener / reanudar las instancias de supervisord.
+
+````
+os.environ['SERVER_SUDO_PASSWORD']= ''
 ````
