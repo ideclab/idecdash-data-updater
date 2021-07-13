@@ -43,4 +43,70 @@ stdout_logfile=/var/log/idecdash/big_courses.out.log
 
 
 ## Configuración
-Una vez que tengamos nuestro fichero de entorno podremos ver que posee nuevas claves en comparación a un fichero de entorno tradicional de laravel, para saber que valores asignar se explicará que hace cada apartado.
+El paquete se encargará de hacer todo lo necesario para actualizar y cargar los datos, sin embargo, este debe ser llamado de algún lado. Para poder ejecutar el puedes guiarte por el archivo de plantilla llamado **main_example.py**, a continuación se detallan de forma general las variables de entorno que se deben establecer.
+
+***
+
+Conexión a la base de datos postgresql
+````
+os.environ['DB_HOST'] = '127.0.0.1'
+os.environ['DB_PORT'] = '5432'
+os.environ['DB_NAME'] = ''
+os.environ['DB_USERNAME'] = ''
+os.environ['DB_PASSWORD'] = ''
+````
+
+***
+
+Ruta al directorio data files del script Canvas Data Cli
+````
+os.environ['PATH_DATA_FILES'] = ''
+````
+
+***
+
+Ruta del directorio donde se encuentra el archivo config.js que pertenece a Canvas Data Cli
+````
+os.environ['PATH_CANVAS_CONFIG'] = ''
+````
+
+***
+
+Caracter concatenador de rutas que utiliza tu sistema operativo  
+
+````
+os.environ['PATH_CONCAT'] = '/'
+````
+
+***
+
+Configuración del SMTP
+
+**Observación:** El SMTP es utilizado para notificar administradores en caso que el proceso de actualización falle en el proceso.
+
+````
+os.environ['SMTP_USER']= ''
+os.environ['SMTP_PASS']= ''
+os.environ['SMTP_HOST']= ''
+os.environ['SMTP_PORT']= ''
+````
+
+***
+
+Emails de administradores que recibirán notificaciones de fallo
+
+````
+mails = ['example@example.cl']
+os.environ['NOTIFICATION_EMAILS'] = os.pathsep.join(mails)
+````
+
+***
+
+Si es true (Primera carga) no comprobará los archivos requests con los anteriores antes de insertar los nuevos, se recomienda cambiarlo a false luego de ejecutar la carga inicial y una primera actualización.
+Cuando es ````False```` comprobará los nuevos requests con los anteriores para prevenir la inserción de duplicados.
+
+**Observación:** Aunque se inserten datos "crudos" duplicados, al procesarse las interacciones no se insertarán actividades duplicados debido a que están protegidas por una clave primaria mixta unica, por lo cual, puede considere esto como un segundo factor de protección.
+
+````
+os.environ['FIRST_DATA_UPDATE']= 'True'
+````
