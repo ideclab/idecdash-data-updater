@@ -33,6 +33,14 @@ IDECDash Data Updater es un componente de IDECDash, visite la wiki del repositor
 
 [Ir a la documentación de Supervisord](http://supervisord.org/ "Canvas Data Cli")
 
+**Observación:** Al agregar la configuración de supervisord no olvides modificar lo siguiente:
+````
+directory= PATH_TO_IDECDASH_BACKEND
+stderr_logfile=/var/log/idecdash/big_courses.err.log
+stdout_logfile=/var/log/idecdash/big_courses.out.log
+````
+*Los archivos para almacenar los log deben ser creados manualmente*
+
 
 ## Configuración
 Una vez que tengamos nuestro fichero de entorno podremos ver que posee nuevas claves en comparación a un fichero de entorno tradicional de laravel, para saber que valores asignar se explicará que hace cada apartado.
