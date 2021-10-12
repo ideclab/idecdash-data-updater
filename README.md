@@ -1,5 +1,5 @@
-# IDECDash Data Updater
-IDECDash Data Updater es un componente de IDECDash, visite la wiki del repositorio para encontrar más información sobre este y otros componentes.
+# UDECDash Data Updater
+UDECDash Data Updater es un componente de UDECDash, visite la wiki del repositorio para encontrar más información sobre este y otros componentes.
 
 ## Requisitos
 - Python 3.9
@@ -35,15 +35,15 @@ IDECDash Data Updater es un componente de IDECDash, visite la wiki del repositor
 
 **Observación:** Al agregar la configuración de supervisord no olvides modificar lo siguiente:
 ````
-directory= PATH_TO_IDECDASH_BACKEND
-stderr_logfile=/var/log/idecdash/big_courses.err.log
-stdout_logfile=/var/log/idecdash/big_courses.out.log
+directory= PATH_TO_UDECDASH_BACKEND
+stderr_logfile=PATH_TO_LOG/log_name.err.log
+stdout_logfile=PATH_TO_LOG/log_name.out.log
 ````
-*Los archivos para almacenar los log deben ser creados manualmente*
+*Los archivos para almacenar los log deben ser creados manualmente, tambien puedes eliminar las lineas de los logs si no deseas guardarlos.*
 
 
 ## Configuración
-El paquete se encargará de hacer todo lo necesario para actualizar y cargar los datos, sin embargo, este debe ser llamado de algún lado. Para poder ejecutar el puedes guiarte por el archivo de plantilla llamado **main_example.py**, a continuación se detallan de forma general las variables de entorno que se deben establecer.
+El paquete se encargará de hacer todo lo necesario para actualizar y cargar los datos, sin embargo, este debe ser llamado de algún lado. Para poder ejecutar el paquete puedes guiarte por el archivo de plantilla llamado **main_example.py**, a continuación se detallan de forma general las variables de entorno que se deben establecer.
 
 ***
 
@@ -115,10 +115,10 @@ os.environ['FIRST_DATA_UPDATE']= 'True'
 
 Eliminar los archivos descargados (exceptuando requests) en la actualización de datos.
 
-**Observación:** Durante el proceso notamos que canvas data cli hace un mal corte de registros por archivo, duplicando algunos registros que posteriormente dan excepciones en la carga automatica debido a indices o claves primarias. Si se establece en True la siguiente propiedad se eliminarán todos los archivos y se descargarán nuevamente para asegurar así la integridad de la aplicación.
+**Observación:** Durante el proceso notamos que canvas data cli hace un mal corte de registros por archivo, duplicando algunos registros que posteriormente dan excepciones en la carga automatica debido a claves unicas. Si se establece en True la siguiente propiedad se eliminarán todos los archivos y se descargarán nuevamente para asegurar así la carga unica de registros.
 
 ````
-os.environ['FORMAT_BEFORE_DOWNLOAD']= 'False'
+os.environ['CLEAR_DIRECTORIES_BEFORE_DOWNLOAD']= 'False'
 ````
 
 ***
@@ -136,8 +136,35 @@ os.environ['FILE_EXTENSION']='gz'
 
 ***
 
-La contraseña es utilizada para detener / reanudar las instancias de supervisord.
+La contraseña del usuario que ejecutará el paquete. Esta es utilizada para detener / reanudar las instancias de supervisord.
 
 ````
 os.environ['SERVER_SUDO_PASSWORD']= ''
 ````
+
+
+***
+
+Ruta absoluta al comando de supervisord para poder ser lanzado desde un crontab.
+
+````
+os.environ['SERVER_SUPERVISORD_COMMAND_PATH']= '/usr/bin/supervisorctl'
+````
+
+***
+
+Ruta absoluta al comando de canvasDataCli para poder ser lanzado desde un crontab.
+
+````
+os.environ['SERVER_CANVAS_DATA_CLI_COMMAND_PATH']= '/usr/local/bin/canvasDataCli'
+````
+
+
+***
+
+Ruta absoluta al directorio de UDECDash fronted. Esto permite renombrar el index para dejar el sitio en un estado de "Carga de datos".
+
+````
+os.environ['FRONTEND_DIR']= ''
+````
+
